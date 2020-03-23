@@ -21,5 +21,16 @@ namespace Tetris
     {
         public Unit[] Units = new Unit[4];
         public TetrominoKind Kind { get; set; }
+
+        public Tetramino GetCopy()
+        {
+            Tetramino copy = new Tetramino();
+            copy.Kind = this.Kind;
+            for (int i = 0; i < Units.Length; i++)
+            {
+                copy.Units[i] = this.Units[i];
+            }
+            return copy;
+        }
     }
 }

@@ -81,6 +81,19 @@ namespace Tetris
             HideTeromino();
             switch (direction)
             {
+                case MoveDirection.Down:
+                    if (!CanMoveDown(1))
+                    {
+                        PlaceTetramino();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < currentTetramino.Units.Length; i++)
+                        {
+                            currentTetramino.Units[i].Row += 1;
+                        }
+                    }
+                    break;
                 case MoveDirection.Right:
                 case MoveDirection.Left:
                     bool right = direction == MoveDirection.Right;
@@ -96,15 +109,38 @@ namespace Tetris
             AddTetrominoToBoard();
         }
 
+        private void PlaceTetramino()
+        {
+            foreach (Unit unit in currentTetramino.Units)
+            {
+                cells[unit.Row][unit.Column].TransformToBlock();
+            }
+
+            currentTetramino = manager.GetRandomTetramino();
+        }
+
+        private bool CanMoveDown(int step)
+        {
+            foreach (Unit unit in currentTetramino.Units)
+            {
+                if (cells[unit.Row + step][unit.Column].IsBlockOrBorder)
+                {
+                    return false;
+                }
+
+            };
+            return true;
+        }
+
         private bool ClashWithBlocksOrBorder(Tetramino currentTetramino, int offset = 0)
         {
             foreach (Unit unit in currentTetramino.Units)
             {
-                if (unit.Column + offset < 1)
+                if (unit.Column + offset < 0)
                     return true;
-                if (unit.Column + offset > 8)
+                if (unit.Column + offset > 23)
                     return true;
-                if (cells[unit.Row][unit.Column].isBlockOrBorder)
+                if (cells[unit.Row][unit.Column + offset].IsBlockOrBorder)
                     return true;
             }
             return false;

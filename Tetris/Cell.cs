@@ -11,7 +11,7 @@ namespace Tetris
     public class Cell
 
     {
-        public bool isBlockOrBorder { get { return CellKind == CellKind.Block || CellKind == CellKind.Border; } }
+        public bool IsBlockOrBorder { get { return CellKind == CellKind.Block || CellKind == CellKind.Border; } }
         public CellKind CellKind { get; private set; }
 
         public override string ToString()
@@ -23,9 +23,9 @@ namespace Tetris
                 case CellKind.FreeSpace:
                     return "  ";
                 case CellKind.Tetramino:
-                    return "■ ";
+                    return "+ ";
                 case CellKind.Block:
-                    return " ";
+                    return "■ ";
                 default:
                     return "  ";
             }
@@ -41,6 +41,11 @@ namespace Tetris
         public void TransformToFreeSpace()
         {
             CellKind = CellKind.FreeSpace;
+        }
+
+        public void TransformToBlock()
+        {
+            CellKind = CellKind.Block;
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Tetris
         }
         public Tetramino GetRandomTetramino()
         {
-            return defaultTetraminos[6];
+            return defaultTetraminos[6].GetCopy();
         }
     }
 }

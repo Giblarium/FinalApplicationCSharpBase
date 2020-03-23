@@ -8,8 +8,10 @@ namespace Tetris
 {
     class TetraminoManager
     {
+        private readonly System.Random random;
         public TetraminoManager()
         {
+            random = new Random();
             InitDefaultTetromino();
         }
 
@@ -76,7 +78,9 @@ namespace Tetris
         }
         public Tetramino GetRandomTetramino()
         {
-            return defaultTetraminos[6].GetCopy();
+            int index = random.Next(7);
+            Tetramino nextTetamino = defaultTetraminos[index];
+            return nextTetamino.GetCopy();
         }
     }
 }

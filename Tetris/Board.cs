@@ -84,7 +84,7 @@ namespace Tetris
                 case MoveDirection.Down:
                     if (!CanMoveDown(1))
                     {
-                        PlaceTetramino();
+                        PlaceTetramino(instantly: false);
                     }
                     else
                     {
@@ -93,6 +93,9 @@ namespace Tetris
                             currentTetramino.Units[i].Row += 1;
                         }
                     }
+                    break;
+                case MoveDirection.InstantlyDown:
+                    PlaceTetramino(instantly: true);
                     break;
                 case MoveDirection.Right:
                 case MoveDirection.Left:
@@ -109,14 +112,56 @@ namespace Tetris
             AddTetrominoToBoard();
         }
 
-        private void PlaceTetramino()
+        private void PlaceTetramino(bool instantly)
         {
+            if (instantly)
+            {
+                MoveDownInstantly();
+            }
             foreach (Unit unit in currentTetramino.Units)
             {
                 cells[unit.Row][unit.Column].TransformToBlock();
             }
 
+            if (EndGame(cells[4]))
+            {
+                Game.EndGame();
+                return;
+            }
+
+
             currentTetramino = manager.GetRandomTetramino();
+        }
+
+        private bool EndGame(Cell[] cell)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (cell[i].CellKind == CellKind.Block)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void MoveDownInstantly()
+        {
+            int step = 0;
+            while (true)
+            {
+                if (!CanMoveDown(step + 1))
+                {
+                    for (int i = 0; i < currentTetramino.Units.Length; i++)
+                    {
+                        currentTetramino.Units[i].Row = currentTetramino.Units[i].Row + step;
+                    }
+                    break;
+                }
+                step++;
+
+            }
+
         }
 
         private bool CanMoveDown(int step)

@@ -24,7 +24,7 @@ namespace Tetris
             board.Show();
         }
         private static bool gameState;
-        private static void EndGame() {
+        public static void EndGame() {
             gameState = false;
         }
 
